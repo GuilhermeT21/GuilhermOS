@@ -1,4 +1,3 @@
-actionlib==1.14.0
 angles==1.9.13
 asgiref==3.8.1
 backports.zoneinfo==0.2.1
