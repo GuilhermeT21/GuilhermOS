@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial;
+            font-size: 12px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .os {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Relatório de Serviços</h1>
+
+<p>Período: {{ periodo }}</p>
+
+{% for os in ordens %}
+<div class="os">
+    <div class="title">OS #{{ os.id }}</div>
+
+    Cliente: {{ os.cliente.nome }}<br>
+    Modelo: {{ os.modelo_motor }}<br>
+    Status: {{ os.get_status_display }}<br>
+    Total: R$ {{ os.valor_total }}<br>
+    Data: {{ os.created_at|date:"d/m/Y" }}
+
+</div>
+{% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .mobile-container {
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 16px;
+    }
+
+    .header {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .search input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid #1f2330;
+        background: #12141a;
+        color: #e6e8ee;
+        font-size: 16px;
+        margin-bottom: 16px;
+    }
+
+    /* SEÇÃO POR STATUS */
+    .section {
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #8b90a0;
+        margin-bottom: 10px;
+    }
+
+    /* CARD */
+    .os-card {
+        background: #171922;
+        border: 1px solid #1f2330;
+        border-radius: 16px;
+        padding: 14px;
+        margin-bottom: 12px;
+    }
+
+    .os-img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 10px;
+    }
+
+    .os-title {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .os-sub {
+        font-size: 13px;
+        color: #8b90a0;
+        margin-bottom: 8px;
+    }
+
+    .os-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .price {
+        font-size: 13px;
+        color: #9ecbff;
+        background: rgba(79,124,255,0.1);
+        padding: 5px 10px;
+        border-radius: 8px;
+    }
+
+    .open-btn {
+        font-size: 13px;
+        text-decoration: none;
+        color: #4f7cff;
+    }
+
+    /* BOTÃO FIXO (APP STYLE) */
+    .fab {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #4f7cff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 26px;
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .fab:active {
+        transform: scale(0.95);
+    }
+
+</style>
+
+<div class="mobile-container">
+
+    <div class="header">Produção</div>
+
+    <form method="get" class="search">
+        <input type="text"
+               name="q"
+               placeholder="Buscar cliente ou modelo..."
+               value="{{ request.GET.q }}">
+    </form>
+
+    {% for coluna in colunas %}
+
+    <div class="section">
+
+        <div class="section-title">
+            {{ coluna.titulo }} ({{ coluna.itens|length }})
+        </div>
+
+        {% for os in coluna.itens %}
+
+        <div class="os-card">
+
+            {% if os.fotos.first %}
+                <img src="{{ os.fotos.first.imagem.url }}" class="os-img">
+            {% endif %}
+
+            <div class="os-title">{{ os.cliente.nome }}</div>
+            <div class="os-sub">{{ os.modelo_motor }}</div>
+
+            <div class="os-bottom">
+                <div class="price">R$ {{ os.valor_total }}</div>
+
+                <a href="{% url 'os_detail' os.id %}" class="open-btn">
+                    Abrir →
+                </a>
+            </div>
+
+        </div>
+
+        {% empty %}
+            <div class="text-muted small">Nenhuma OS</div>
+        {% endfor %}
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

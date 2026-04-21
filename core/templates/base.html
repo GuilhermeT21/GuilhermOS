@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>GuilhermOS</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #0b0c0f;
+            --panel: #11131a;
+            --border: #1f2330;
+            --text: #e6e8ee;
+            --muted: #8b90a0;
+            --accent: #4f7cff;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* LAYOUT */
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 220px;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            padding: 20px 12px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+
+        /* MOBILE SIDEBAR */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -240px;
+                top: 0;
+                height: 100%;
+                z-index: 999;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+        }
+
+        /* LOGO */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            margin-bottom: 30px;
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .logo-text span {
+            color: var(--accent);
+        }
+
+        .logo-mark {
+            width: 22px;
+            height: 22px;
+            position: relative;
+            transform: rotate(45deg);
+        }
+
+        .logo-mark::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #4f7cff, #7aa2ff);
+            box-shadow: 0 0 10px rgba(79,124,255,0.6);
+        }
+
+        .logo-mark .core {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--bg);
+            border-radius: 2px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* NAV LINKS */
+        .nav-link-custom {
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .nav-link-custom:hover {
+            background: #1a1d28;
+            color: white;
+        }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            height: 60px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+
+        .menu-btn {
+            background: #1f2330;
+            border: none;
+            color: white;
+            font-size: 18px;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary-soft {
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid #2a2f3d;
+            color: #cbd1e1;
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .btn-primary-soft {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 20px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .alert {
+            background: #1f2330;
+            border: none;
+            color: #cbd1e1;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <a href="{% url 'dashboard' %}" class="logo">
+            <div class="logo-mark">
+                <div class="core"></div>
+            </div>
+            <div class="logo-text">
+                Guilherm<span>OS</span>
+            </div>
+        </a>
+
+        <a href="{% url 'dashboard' %}" class="nav-link-custom">Painel</a>
+        <a href="{% url 'historico_geral' %}" class="nav-link-custom">Histórico</a>
+        <a href="{% url 'metricas' %}" class="nav-link-custom">Métricas</a>
+        <a href="{% url 'fichas_motor' %}" class="nav-link-custom">Planilha de Montagem</a>
+
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+
+            <button class="menu-btn d-lg-none" onclick="toggleSidebar()">☰</button>
+
+            <div class="actions">
+
+                <a href="{% url 'checkin' %}" class="btn-primary-soft">
+                    + Novo
+                </a>
+            </div>
+
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert mb-3">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

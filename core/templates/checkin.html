@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h4>Nova Ordem de Serviço</h4>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label>Nome do Cliente</label>
+        <input type="text" name="nome" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Telefone</label>
+        <input type="text" name="telefone" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Marca</label>
+        <input type="text" name="marca" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Modelo do Motor</label>
+        <input type="text" name="modelo" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Descrição do Problema</label>
+        <textarea name="descricao" class="form-control" rows="3" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Fotos</label>
+        <input type="file" name="fotos" multiple class="form-control" accept="image/*" capture="environment">
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">Registrar Entrada</button>
+
+</form>
+
+{% endblock %}

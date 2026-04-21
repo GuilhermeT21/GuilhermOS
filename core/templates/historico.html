@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .page {
+        padding: 16px;
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    /* FILTROS */
+    .filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .filters input,
+    .filters select {
+        background: #12141a;
+        border: 1px solid #1f2330;
+        color: #e6e8ee;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .filters button {
+        background: #4f7cff;
+        border: none;
+        color: white;
+        border-radius: 10px;
+        padding: 10px 14px;
+    }
+
+    /* DESKTOP TABLE */
+    .desktop-table {
+        display: block;
+    }
+
+    /* MOBILE CARDS */
+    .mobile-list {
+        display: none;
+    }
+
+    .os-card {
+        background: #171922;
+        border: 1px solid #1f2330;
+        border-radius: 14px;
+        padding: 14px;
+        margin-bottom: 12px;
+    }
+
+    .os-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .label {
+        color: #8b90a0;
+    }
+
+    .badge-soft {
+        background: #1f2330;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+
+    .open-btn {
+        margin-top: 10px;
+        display: block;
+        text-align: center;
+        padding: 10px;
+        border-radius: 8px;
+        background: #4f7cff;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    /* MOBILE MODE */
+    @media (max-width: 768px) {
+
+        .filters {
+            flex-direction: column;
+        }
+
+        .desktop-table {
+            display: none;
+        }
+
+        .mobile-list {
+            display: block;
+        }
+
+    }
+
+</style>
+
+<div class="page">
+
+    <div class="title">Histórico de Serviços</div>
+
+    <form method="get" class="filters">
+        <input type="text"
+               name="q"
+               value="{{ request.GET.q }}"
+               placeholder="Buscar cliente ou modelo">
+
+        <select name="status">
+            <option value="">Todos os status</option>
+            {% for key, value in status_choices %}
+                <option value="{{ key }}"
+                    {% if request.GET.status == key %}selected{% endif %}>
+                    {{ value }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button>Filtrar</button>
+    </form>
+
+    <!-- DESKTOP -->
+    <div class="desktop-table card">
+        <div class="table-responsive">
+            <table class="table table-dark table-striped align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cliente</th>
+                        <th>Modelo</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th>Entrada</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for os in ordens %}
+                    <tr>
+                        <td>{{ os.id }}</td>
+                        <td>{{ os.cliente.nome }}</td>
+                        <td>{{ os.modelo_motor }}</td>
+                        <td>
+                            <span class="badge bg-secondary">
+                                {{ os.get_status_display }}
+                            </span>
+                        </td>
+                        <td>R$ {{ os.valor_total }}</td>
+                        <td>{{ os.created_at|date:"d/m/Y" }}</td>
+                        <td>
+                            <a href="{% url 'os_detail' os.id %}"
+                               class="btn btn-sm btn-outline-light">
+                               Abrir
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MOBILE -->
+    <div class="mobile-list">
+
+        {% for os in ordens %}
+
+        <div class="os-card">
+
+            <div class="os-row">
+                <span class="label">Cliente</span>
+                <strong>{{ os.cliente.nome }}</strong>
+            </div>
+
+            <div class="os-row">
+                <span class="label">Modelo</span>
+                <span>{{ os.modelo_motor }}</span>
+            </div>
+
+            <div class="os-row">
+                <span class="label">Status</span>
+                <span class="badge-soft">
+                    {{ os.get_status_display }}
+                </span>
+            </div>
+
+            <div class="os-row">
+                <span class="label">Total</span>
+                <span>R$ {{ os.valor_total }}</span>
+            </div>
+
+            <div class="os-row">
+                <span class="label">Entrada</span>
+                <span>{{ os.created_at|date:"d/m/Y" }}</span>
+            </div>
+
+            <a href="{% url 'os_detail' os.id %}" class="open-btn">
+                Abrir OS
+            </a>
+
+        </div>
+
+        {% empty %}
+            <div class="text-center text-muted mt-3">
+                Nenhum registro encontrado
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

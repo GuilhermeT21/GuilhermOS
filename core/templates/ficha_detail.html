@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h4 class="mb-3">{{ f.marca_modelo }}</h4>
+
+<div class="card p-3 mb-3">
+    <h6>Identificação</h6>
+    <p>Potência: {{ f.potencia }}</p>
+    <p>Tensão: {{ f.tensao }}</p>
+    <p>Tipo: {{ f.tipo }}</p>
+</div>
+
+<div class="card p-3 mb-3">
+    <h6>Dados construtivos</h6>
+    <p>Ranhuras: {{ f.numero_ranhuras }}</p>
+    <p>Polos: {{ f.numero_polos }}</p>
+    <p>Enrolamento: {{ f.tipo_enrolamento }}</p>
+</div>
+
+<div class="card p-3 mb-3">
+    <h6>Bobinagem</h6>
+    <p>Espiras: {{ f.espiras_por_bobina }}</p>
+    <p>Bitola: {{ f.bitola_fio }}</p>
+    <p>Passo: {{ f.passo_bobina }}</p>
+    <p>Bobinas/fase: {{ f.bobinas_por_fase }}</p>
+</div>
+
+<div class="card p-3 mb-3">
+    <h6>Ligação</h6>
+    <p>Tipo: {{ f.tipo_ligacao }}</p>
+    <p>Esquema: {{ f.esquema_fechamento }}</p>
+</div>
+
+<a href="{% url 'fichas_motor' %}" class="btn btn-secondary">
+    Voltar
+</a>
+
+{% endblock %}

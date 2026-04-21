@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h4 class="mb-3">Planilha de Montagem</h4>
+
+<form method="post">
+    {% csrf_token %}
+
+    <input name="marca_modelo" class="form-control mb-2" placeholder="Marca/Modelo">
+    <input name="potencia" class="form-control mb-2" placeholder="Potência">
+    <input name="tensao" class="form-control mb-2" placeholder="Tensão">
+    <input name="tipo" class="form-control mb-2" placeholder="Tipo">
+
+    <input name="numero_ranhuras" class="form-control mb-2" placeholder="Ranhuras">
+    <input name="numero_polos" class="form-control mb-2" placeholder="Polos">
+    <input name="tipo_enrolamento" class="form-control mb-2" placeholder="Enrolamento">
+
+    <input name="espiras" class="form-control mb-2" placeholder="Espiras">
+    <input name="bitola" class="form-control mb-2" placeholder="Bitola">
+    <input name="passo" class="form-control mb-2" placeholder="Passo">
+    <input name="bobinas" class="form-control mb-2" placeholder="Bobinas/fase">
+
+    <input name="ligacao" class="form-control mb-2" placeholder="Ligação">
+    <textarea name="esquema" class="form-control mb-2" placeholder="Esquema"></textarea>
+
+    <button class="btn btn-primary w-100 mb-4">Salvar</button>
+</form>
+
+{% for f in fichas %}
+<div class="card p-3 mb-3">
+    <strong>{{ f.marca_modelo }}</strong><br>
+    {{ f.potencia }} - {{ f.tensao }}
+
+    <div class="text-muted small">
+    {{ f.created_at|date:"d/m/Y" }}
+    </div>
+    <a href="{% url 'ficha_detail' f.id %}" class="btn btn-sm btn-outline-primary mt-2 w-100">
+        Ver detalhes
+    </a>
+</div>
+{% endfor %}
+
+{% endblock %}
